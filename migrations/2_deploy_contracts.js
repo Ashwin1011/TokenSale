@@ -1,5 +1,5 @@
-var Migrations = artifacts.require("./DappToken.sol");
+var DappToken = artifacts.require("./DappToken.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Migrations);
+  deployer.deploy(DappToken, 1000000);
 };
