@@ -62,7 +62,36 @@ var numberOfTokens ;
     return tokenSaleInstance.buyToken(800000, {from: buyer, value :numberOfTokens * tokenPrice });
 
   }).then(assert.fail).catch(function(error){
-  assert(error.message.indexOf('revert') >= 0, 'cannot purchase more tokens than available');
+  assert(error.message.indexOf('revert' >= 0, 'cannot purchase more tokens than available'));
   });
 });
+
+  it('ends token sale', function(){
+    return DappToken.deployed().then(function(instance){
+//grab token instance first
+      tokenInstance = instance;
+      return DappTokenSale.deployed();
+    }).then(function(instance){
+      tokenSaleInstance = instance;
+      //try to end sale using user other than admin
+return tokenSaleInstance.endSale({from : buyer});
+
+}).then(assert.fail).catch(function(error){
+  assert(error.message.indexOf('revert' >= 0, 'msg.sender must be admin'));
+  //end sale as admin
+  return tokenSaleInstance.endSale({from : admin});
+}).then(function(receipt){
+  return tokenInstance.balanceOf(admin);
+}).then(function(balance){
+  assert.equal(balance.toNumber(), 999990, 'returns all unsold dapp tokens to admin');
+  //check that token price was reset when selfDestruct was called
+//   return tokenSaleInstance.tokenPrice();
+// }).then(function(price){
+//   assert.equal(price.toNumber(), 0, 'token price was reset');
+ });
+
+  });
+
+
+
 });
