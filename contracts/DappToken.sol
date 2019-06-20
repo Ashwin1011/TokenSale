@@ -7,7 +7,7 @@ contract DappToken{
 
   string public name = 'DApp Token';
   string public symbol = 'DAPP';
-  string public standard = 'Dapp Token v1.0' ;
+  string public standard = 'DApp Token v1.0' ;
 
   mapping(address => uint256) public balanceOf;
   mapping(address => mapping(address => uint)) public allowance;
@@ -47,7 +47,10 @@ contract DappToken{
     balanceOf[_from] -= _value;
     balanceOf[_to] += _value;
     allowance[_from][msg.sender] -= _value;
+    emit Transfer(msg.sender,  _to ,  _value);
+
     return true;
+
 
   }
 

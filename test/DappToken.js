@@ -2,7 +2,7 @@ var DappToken = artifacts.require("./DappToken.sol");
 
 contract("DappToken", function(accounts){
 var tokenInstance;
-   console.log(accounts);
+  // console.log(accounts);
    it('allocates the correct values to the contract', function(){
      return DappToken.deployed().then(function(instance){
        tokenInstance = instance;
@@ -14,7 +14,7 @@ var tokenInstance;
        assert.equal(symbol, "DAPP", 'has the correct symbol');
        return tokenInstance.standard();
      }).then(function(standard){
-       assert.equal(standard, 'Dapp Token v1.0', 'has the correct standard');
+       assert.equal(standard, 'DApp Token v1.0', 'has the correct standard');
      });
    })
 
@@ -37,8 +37,10 @@ var tokenInstance;
     return DappToken.deployed().then(function(instance) {
       tokenInstance = instance;
       // Test `require` statement first by transferring something larger than the sender's balance
-      return tokenInstance.transfer.call(accounts[1], web3.utils.toWei(Number(1).toString()));
+      // web3.utils.toWei(Number(3.3e20).toString())
+      return tokenInstance.transfer.call(accounts[1], 3000000);
     }).then(assert.fail).catch(function(error) {
+      //console.error(Object.getPrototypeOf(error))
       assert(error.message.indexOf('revert') >= 0, 'error message must contain revert');
       return tokenInstance.transfer.call(accounts[1], 250000, { from: accounts[0] });
     }).then(function(success) {
